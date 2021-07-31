@@ -1,0 +1,16 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "community-name": "计算机协会",
+      "unit": "信息工程学院",
+      "slog": "了解计算机知识",
+      "admin": "354",
+      "show":65 ,
+      "logins": 543
+    }
+  ]
+}

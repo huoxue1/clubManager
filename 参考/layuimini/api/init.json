@@ -1,0 +1,72 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/login.html?t=1"
+  },
+  "logoInfo": {
+    "title": "社团管理系统",
+	"icon":"fa fa-cube",
+    // "image": "images/favicon.ico",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "主页",
+      "icon": "fa fa-address-book",
+      "href": "index.html",
+      "target": "_self",
+      "child": [
+        {
+          "title": "学院简介",
+          "href": "",
+          "icon": "fa fa-graduation-cap",
+          "target": "_self"
+        },
+        {
+          "title": "社团汇总",
+          "href": "page/community-show.html",
+          "icon": "fa fa-bar-chart",
+          "target": "_self"
+        },
+        {
+          "title": "通知通告",
+          "href": "page/activity-information.html",
+          "icon": "fa fa-bell",
+          "target": "_self"
+        },
+        {
+          "title": "社团活动",
+          "href": "page/activity-information.html",
+          "icon": "fa fa-bars",
+          "target": "_self"
+        },
+        {
+          "title": "交流互动",
+          "href": "",
+          "icon": "fa fa-comment",
+          "target": "_self"
+        },
+        {
+          "title": "关于我们",
+          "href": "",
+          "icon": "fa fa-flag-o",
+          "target": "_self"
+        },
+        {
+          "title": "留言板",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "系统功能",
+          "href": "",
+          "icon": "fa fa-snowflake-o",
+          "target": ""
+        }
+      ]
+	  
+    
+	
+  ]
+}
