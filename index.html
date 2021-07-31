@@ -99,7 +99,9 @@
 <script src="https://www.layuicdn.com/layui/layui.js"></script>
 
 <script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+  
 //JS 
 layui.use(['element', 'layer', 'util'], function(){
   var element = layui.element
@@ -126,6 +128,8 @@ layui.use(['element', 'layer', 'util'], function(){
   });
   
 });
+// 生产环境开启，检查是否登录成功
+// check_login()
 </script>
 </body>
 </html>
