@@ -56,19 +56,19 @@
     </style>
 </head>
 <body>
-<div class="main-body">
+<div id="data" class="main-body">
     <div class="login-main">
         <div class="login-top">
             <span>高校后台管理系统注册</span>
             <span class="bg1"></span>
             <span class="bg2"></span>
         </div>
-        <form class="layui-form login-bottom">
+        <form action="/register" method="post"  class="layui-form login-bottom">
             <div class="center">
 				  
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="username" lay-verify="required"  placeholder="请输入账号名" maxlength="24"/>
+                    <input type="text" name=account lay-verify="required"  placeholder="请输入账号名" maxlength="24"/>
 					 
                 </div>
 
@@ -85,22 +85,22 @@
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="regist-name" lay-verify="required"  placeholder="请输入姓名" maxlength="20">
+				    <input type="text" name="name" lay-verify="required"  placeholder="请输入姓名" maxlength="20">
 				</div>
 
 				<div class="item">
 					    <label>请选择性别</label>
-						<input type="radio" name="regist-sex" lay-verify="required"  title="男" value="男">
-						<input type="radio" name="regist-sex" lay-verify="required"  title="女" value="女">
+						<input type="radio" name="sex" lay-verify="required"  title="男" value="男">
+						<input type="radio" name="sex" lay-verify="required"  title="女" value="女">
 											
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="regist-Tel" lay-verify="required"  placeholder="请输入电话号码" maxlength="11">
+				    <input type="text" name="phone" lay-verify="required"  placeholder="请输入电话号码" maxlength="11">
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="regist-grade" lay-verify="required"  placeholder="请输入专业班级" maxlength="20">
+				    <input type="text" name="grade" lay-verify="required"  placeholder="请输入专业班级" maxlength="20">
 				</div>
 
                 <div id="validatePanel" class="item" style="width: 137px;">
@@ -119,7 +119,23 @@
     第2小组合作完成<span class="padding-5">|</span><a target="_blank" >信息工程学院</a>
 </div> -->
 <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="/js/vue.js"></script>
 <script>
+
+    new Vue({
+        el:"data",
+        data:{
+            account:"",
+            password:"",
+            name:"",
+            permit:0,
+            sex:"男",
+            phone:"",
+            grade:"",
+            position:""
+        }
+    })
+
     layui.use(['form','jquery'], function () {
         var $ = layui.jquery,
             form = layui.form,

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/public.css" media="all">
 </head>
 <body>
-<div class="layuimini-container">
+<div id="data" class="layuimini-container">
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
@@ -45,7 +45,19 @@
             </div>
         </script> -->
 
-        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <table class="layui-tab" lay-filter="table" id="currentTableId" >
+            <thead>
+            <tr>
+            <th lay-data="{field:'Id', sort:true}">ID</th>
+            <th lay-data="{field:'cname'}">社团名称</th>
+            <th lay-data="{field:'introduce'}">社团介绍</th>
+                <th lay-data="{field:'scene'}">社团风采</th>
+            </tr>
+            </thead>
+           <tbody id="content">
+           
+           </tbody>
+        </table>
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">加入</a>
@@ -56,37 +68,41 @@
 
     </div>
 </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/vue.js"></script>
 <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
 
-        table.render({
-            elem: '#currentTableId',
-            url: '../api/table.json',
-            toolbar: '#toolbarDemo',
-            defaultToolbar: ['filter', 'exports', 'print', {
-                title: '提示',
-                layEvent: 'LAYTABLE_TIPS',
-                icon: 'layui-icon-tips'
-            }],
-            cols: [[
-                {type: "checkbox", width: 50},
-                {field: 'id', width: 80, title: 'ID', sort: true},
-                {field: 'community-name', width: 150, title: '社团名称'},
-                {field: 'unit', width: 150, title: '所属单位', sort: true},
-                {field: 'slog', width: 150, title: '社团口号',minWidth: 150},
-                {field: 'admin', title: '管理员id',width:80},
-                {field: 'show', width:150, title: '社团风采', sort: true},
-               
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
-            ]],
-            limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
-            page: true,
-            skin: 'line'
+        new Vue({
+            el:"#data",
+            data:{
+                
+            },
+            methods:{
+                
+            },
+            created:function () {
+                axios.post('/get_clubs').then(function (response) {
+                    let content = response.data
+                    for (let club in content) {
+                        $('#body').innerHTML += "<tr>" +
+                            "<td>"+club.cid+"</td>"+
+                            "<td>"+club.cname+"</td>"+
+                            "<td>"+club.introduction+"</td>"+
+                            "<td>"+"<img src="+club.scene+">"+"</td>"+
+                            "</tr>>"
+                    }
+                })   
+            }
+        })
+        table.init('table',{
+            height:300
+
         });
 
         // 监听搜索操作
@@ -97,14 +113,14 @@
             });
 
             //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
+            // table.reload('currentTableId', {
+            //     page: {
+            //         curr: 1
+            //     }
+            //     , where: {
+            //         searchParams: result
+            //     }
+            // }, 'data');
 
             return false;
         });
