@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.clubmg.pojo.Attend" table="attend" schema="clubmg">
+        <composite-id>
+            <key-property name="aid" column="aid"/>
+            <key-property name="uid" column="uid"/>
+        </composite-id>
+    </class>
+</hibernate-mapping>

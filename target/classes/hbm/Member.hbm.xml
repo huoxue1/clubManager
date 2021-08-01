@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.clubmg.pojo.Member" table="member" schema="clubmg">
+        <composite-id>
+            <key-property name="uid" column="uid"/>
+            <key-property name="cid" column="cid"/>
+        </composite-id>
+        <property name="permit" column="permit"/>
+        <property name="position" column="position"/>
+        <property name="state1" column="state1"/>
+        <property name="state2" column="state2"/>
+    </class>
+</hibernate-mapping>

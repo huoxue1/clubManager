@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.clubmg.pojo.Club" table="club" schema="clubmg">
+        <id name="cid" column="cid"/>
+        <property name="cname" column="cname"/>
+        <property name="admin1" column="admin1"/>
+        <property name="admin2" column="admin2"/>
+        <property name="admin3" column="admin3"/>
+        <property name="introduction" column="introduction"/>
+        <property name="scene" column="scene"/>
+        <property name="state" column="state"/>
+    </class>
+</hibernate-mapping>
