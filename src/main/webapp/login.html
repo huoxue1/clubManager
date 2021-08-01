@@ -141,7 +141,11 @@
                     "account":this.account,
                     "password":this.password
                 }).then(function (res){
-                    alert(res)
+                    if (res.code==="0"){
+                        window.Location = "/index.html"
+                    }else {
+                        alert("账号不存在或者密码错误")
+                    }
                 })
             }
         }

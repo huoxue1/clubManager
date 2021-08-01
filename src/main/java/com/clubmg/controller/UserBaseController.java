@@ -3,10 +3,7 @@ package com.clubmg.controller;
 import com.clubmg.pojo.User;
 import com.clubmg.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -20,11 +17,12 @@ public class UserBaseController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> login(Long account, String password, HttpSession session) {
+    public Map<String, String> login(@RequestBody Map<String,String> params, HttpSession session) {
+        long account = Long.parseLong(params.get("account"));
+        String password = params.get("password");
         List<User> users = userService.getUser(account, password);
         HashMap<String, String> map = new HashMap<>();
-        System.out.println(account);
-        System.out.println(password);
+
         if (users.size() == 1) {
             System.out.println("-------------------------------");
             System.out.println(users.get(0));
