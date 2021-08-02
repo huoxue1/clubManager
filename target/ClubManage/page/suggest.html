@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- 引入 layui.css -->
+			<link rel="stylesheet" href="/lib/layui-v2.6.3/css/layui.css">
+			 
+			<!-- 引入 layui.js -->
+		<script src="/lib/layui-v2.6.3/layui.js"></script>
+
+	</head>
+	<body>
+	<script src="./layui/layui.js"></script>
+		<div style="background-color: #197971; width: 100%; height: 60px;">
+			<h1 style="color: white;text-align: center;">所有建议</h1>
+		</div>
+		
+		
+		<div id="data" class="layui-bg-gray" style="padding: 30px" layui-col-mad6>
+		  <div class="layui-row layui-col-space15">
+		    <div class="layui-col-md6">
+		      <div class="layui-card">
+				  <form action="/suggest" method="post" class="layui-form">
+					  
+
+					  <div class="layui-form-item layui-form-text">
+					      <label class="layui-form-label" id="showsuggests">建议与投诉</label>
+					      <div class="layui-input-block">
+					        <textarea v-model="details" name="details" id="" class="layui-textarea"></textarea>
+					      </div>
+						  <button type="submit" class="layui-btn">提交</button>
+					    </div>
+				  </form>
+		      </div>
+		    </div> 
+		  </div>
+			<div>
+				<table id="table" cellspacing="1" class="layui-tab">
+					<thead><h2>所有建议</h2></thead>
+					<tr>
+						<td>1</td>
+					</tr>
+					<tr>
+						<td>2</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	<script src="/js/vue.js"></script>
+	<script>
+		new Vue({
+			el:"#data",
+			data:{
+				details : ""
+			},
+			methods:{
+				submit:function () {
+
+				}
+			},
+			created:function () {
+
+			}
+		})
+		layui.use("table",function (){
+			var table = layui.table
+			table.init("table",function () {
+				height:300
+			})
+		})
+	</script>
+
+		
+		<script>
+		
+			
+		</script>
+		
+	</body>
+</html>

@@ -1,6 +1,5 @@
 package com.clubmg.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.clubmg.pojo.User;
 import com.clubmg.service.UserService;
 import org.springframework.stereotype.Controller;

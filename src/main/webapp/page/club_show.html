@@ -52,6 +52,7 @@
             <th lay-data="{field:'cname'}">社团名称</th>
             <th lay-data="{field:'introduce'}">社团介绍</th>
                 <th lay-data="{field:'scene'}">社团风采</th>
+                <th lay-data="{field:'link'}">&nbsp;</th>
             </tr>
             </thead>
            <tbody id="content">
@@ -73,6 +74,20 @@
 <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 <script>
+
+    function join_club(dom) {
+        $.ajax({
+            url:"/join_club",
+            type:"post",
+            data:{"cid":dom.cid},
+            success:function (res) {
+                if (res===1){
+                    alert("加入成功，正在等待审核通过")
+                }
+            }
+        })
+    }
+
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -95,6 +110,7 @@
                             "<td>"+club.cname+"</td>"+
                             "<td>"+club.introduction+"</td>"+
                             "<td>"+"<img src="+club.scene+">"+"</td>"+
+                            "<button class='layui-btn' type='button' cid="+club.cid+" onclick='join_club()'>加入社团</button>"+
                             "</tr>>"
                     }
                 })   

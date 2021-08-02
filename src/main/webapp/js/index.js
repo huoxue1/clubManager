@@ -10,6 +10,11 @@ function suggest_submit() {
 
 }
 
+function my_club() {
+    $("#iframe").attr("src","./page/my_club.html")
+
+}
+
 function check_login() {
     axios.post('/get_current_uid',{
         
