@@ -1,5 +1,6 @@
 package com.clubmg.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.clubmg.pojo.User;
 import com.clubmg.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -88,8 +89,7 @@ public class UserBaseController {
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
-    public int singUp(User user) {
-
+    public int singUp( User user) {
         System.out.println("-----------------------------");
         System.out.println(user);
         System.out.println("-----------------------------");

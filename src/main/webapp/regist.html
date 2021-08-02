@@ -68,13 +68,13 @@
 				  
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name=account lay-verify="required"  placeholder="请输入账号名" maxlength="24"/>
+                    <input v-model="account" type="text" name=account lay-verify="required"  placeholder="请输入账号名" maxlength="24"/>
 					 
                 </div>
 
                 <div class="item">
                     <span class="icon icon-3"></span>
-                    <input type="password" name="password1" lay-verify="required"  placeholder="请输入密码" maxlength="20">
+                    <input v-model="password" type="password" name="password" lay-verify="required"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
 				
@@ -85,22 +85,22 @@
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="name" lay-verify="required"  placeholder="请输入姓名" maxlength="20">
+				    <input v-model="name" type="text" name="name" lay-verify="required"  placeholder="请输入姓名" maxlength="20">
 				</div>
 
 				<div class="item">
 					    <label>请选择性别</label>
-						<input type="radio" name="sex" lay-verify="required"  title="男" value="男">
-						<input type="radio" name="sex" lay-verify="required"  title="女" value="女">
+						<input type="radio" v-model="sex" name="sex" lay-verify="required"  title="男" value="男">
+						<input type="radio" v-model="sex" name="sex" lay-verify="required"  title="女" value="女">
 											
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="phone" lay-verify="required"  placeholder="请输入电话号码" maxlength="11">
+				    <input type="text" v-model="phone" name="phone" lay-verify="required"  placeholder="请输入电话号码" maxlength="11">
 				</div>
 				
 				<div class="item">
-				    <input type="text" name="grade" lay-verify="required"  placeholder="请输入专业班级" maxlength="20">
+				    <input type="text" v-model="grade" name="grade" lay-verify="required"  placeholder="请输入专业班级" maxlength="20">
 				</div>
 
                 <div id="validatePanel" class="item" style="width: 137px;">
@@ -108,7 +108,7 @@
                     <img id="refreshCaptcha" class="validateImg"  src="../images/captcha.jpg" >
                 </div>
 				<div  style="text-align:center; width:100%;height:100%;margin:0px;top: 150px;left: 50px;">
-				        <button class="login-btn" lay-submit="" lay-filter="regist" lay-event="regist">立即注册</button>
+				        <button @click="submit" type="button" class="login-btn" lay-submit="" lay-filter="regist" lay-event="regist">立即注册</button>
 				    </div>
 				
             </div>
@@ -120,10 +120,13 @@
 </div> -->
 <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="/js/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+
 <script>
 
     new Vue({
-        el:"data",
+        el:"#data",
         data:{
             account:"",
             password:"",
@@ -133,6 +136,47 @@
             phone:"",
             grade:"",
             position:""
+        },
+        methods:{
+            submit:function () {
+                // axios.post('/register',{
+                //     "account":this.account,
+                //     "password":this.password,
+                //     "name":this.name,
+                //     "permit":this.permit,
+                //     "sex":this.sex,
+                //     "phone":this.phone,
+                //     "grade":this.grade,
+                //     "position":this.position
+                // }).then(function (response) {
+                //     if (response.data===1){
+                //         alert("注册成功")
+                //     }
+                // })
+                var data = {
+                    "account": this.account,
+                    "password": this.password,
+                    "name": this.name,
+                    "permit": this.permit,
+                    "sex": this.sex,
+                    "phone": this.phone,
+                    "grade": this.grade,
+                    "position": this.position
+
+                }
+                $.ajax({
+                    url:"/register",
+                    type:"post",
+                    data:data,
+                    success:function (res) {
+                        if (res===1){
+                            window.location = "/login.html"
+                        }else {
+                            alert("注册失败，详情咨询管理员")
+                        }
+                    }
+                })
+            }
         }
     })
 
@@ -169,26 +213,26 @@
                 layer.msg('用户名不能为空');
                 return false;
             }
-            if (data.password1||data.password2 == '') {
+            if (data.password1 || data.password2 == '') {
                 layer.msg('密码不能为空');
                 return false;
             }
-			if(data.password1!=data.password2){
-				layer.msg('两次输入密码不一致');
-				return false;
-			}
+            if (data.password1 != data.password2) {
+                layer.msg('两次输入密码不一致');
+                return false;
+            }
             if (data.captcha == '') {
                 layer.msg('验证码不能为空');
                 return false;
             }
             layer.msg('注册成功', function () {
-               window.location = 'index.html';
-				window.location.replace("login.html"); //
-            }
-			
-			);
+                    window.location = 'index.html';
+                    window.location.replace("login.html"); //
+                }
+            );
             return false;
         });
+    })
 </script>
 </body>
 </html>
