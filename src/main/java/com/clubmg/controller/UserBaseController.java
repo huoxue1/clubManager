@@ -61,6 +61,7 @@ public class UserBaseController {
     @RequestMapping(value = "get_user",method = RequestMethod.POST)
     @ResponseBody
     public User getUser(Long uid) {
+        System.out.println(uid);
         User user = null;
         List<User> users = userService.getUser(uid);
         if (users.size() == 1) {

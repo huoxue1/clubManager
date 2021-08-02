@@ -15,6 +15,16 @@ function my_club() {
 
 }
 
+function login_out() {
+    $.ajax({
+        type:"post",
+        url:"/logout",
+        success:function (resp){
+            console.log("退出登录成功")
+            window.location = "/login.html"
+        }
+    })
+}
 function check_login() {
     axios.post('/get_current_uid',{
         
@@ -23,6 +33,16 @@ function check_login() {
 
         if(isNaN(response.data)){
             window.location = "/login.html"
+        }else {
+            $.ajax({
+                type:"post",
+                url:"/get_user",
+                data:{"uid":response.data},
+                success:function (resp){
+                    console.log(resp.name)
+                    document.getElementById("user").innerText = resp.name
+                }
+            })
         }
     }).catch(function(err){
         window.location = "/login.html"
