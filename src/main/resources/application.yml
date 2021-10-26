@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*mapper.xml
+  type-aliases-package: com.gjs.mapper
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/club_manager?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123
+
+
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always

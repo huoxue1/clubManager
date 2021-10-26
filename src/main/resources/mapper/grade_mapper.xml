@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.mapper.GradeMapper">
+
+    <resultMap id="BaseResultMap" type="com.gjs.entity.Grade" >
+        <result column="grade_id" property="gradeId" />
+        <result column="grade_name" property="gradeName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                grade_id,
+                grade_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gjs.entity.Grade">
+        INSERT INTO grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != gradeId and '' != gradeId">
+                grade_id,
+            </if>
+            <if test="null != gradeName and '' != gradeName">
+                grade_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != gradeId and '' != gradeId">
+                #{gradeId},
+            </if>
+            <if test="null != gradeName and '' != gradeName">
+                #{gradeName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM grade
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.gjs.entity.Grade">
+        UPDATE grade
+        <set>
+            <if test="null != gradeId and '' != gradeId">grade_id = #{gradeId},</if>
+            <if test="null != gradeName and '' != gradeName">grade_name = #{gradeName}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM grade
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM grade
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM grade
+    </select>
+
+</mapper>

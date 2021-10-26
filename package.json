@@ -1,0 +1,16 @@
+{
+  "name": "clubmanager",
+  "version": "1.0.0",
+  "description": "一个用springboot+mybatis开发的社团管理系统",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "author": "huoxue1",
+  "license": "ISC"
+}
