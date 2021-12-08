@@ -11,7 +11,7 @@ module.exports = {
             {text: "数据库设计",link: "/data/sql"},
             {text: "接口文档",link: "/data/config"},
             {text: "技术依赖",link: "/data/config"},
-            {text: "Github",link: "https://github.com/huoxue1/leafBot"},
+            {text: "Github",link: "https://github.com/huoxue1/clubManager"},
             // 显示下拉列表
             {
                 text: 'Languages',
