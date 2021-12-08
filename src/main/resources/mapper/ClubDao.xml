@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.ClubDao">
+
+    <resultMap type="com.gjs.entity.Club" id="ClubMap">
+        <result property="clubId" column="club_id" jdbcType="INTEGER"/>
+        <result property="clubAvatar" column="club_avatar" jdbcType="VARCHAR"/>
+        <result property="clubName" column="club_name" jdbcType="VARCHAR"/>
+        <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
+        <result property="slogan" column="slogan" jdbcType="VARCHAR"/>
+        <result property="presidentId" column="president_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="INTEGER"/>
+        <result property="admin1" column="admin1" jdbcType="INTEGER"/>
+        <result property="admin2" column="admin2" jdbcType="INTEGER"/>
+        <result property="admin3" column="admin3" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ClubMap">
+        select club_id,
+               club_avatar,
+               club_name,
+               introduction,
+               slogan,
+               president_id,
+               create_time,
+               admin1,
+               admin2,
+               admin3,
+               state
+        from club
+        where club_id = #{clubId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ClubMap">
+        select
+        club_id, club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2, admin3, state
+        from club
+        <where>
+<!--            <if test="club.clubId != null">-->
+<!--                and club_id = #{club.clubId}-->
+<!--            </if>-->
+<!--            <if test="club.clubAvatar != null and club.clubAvatar != ''">-->
+<!--                and club_avatar = #{club.clubAvatar}-->
+<!--            </if>-->
+<!--            <if test="clubName != null and clubName != ''">-->
+<!--                and club_name = #{clubName}-->
+<!--            </if>-->
+<!--            <if test="introduction != null and introduction != ''">-->
+<!--                and introduction = #{introduction}-->
+<!--            </if>-->
+<!--            <if test="slogan != null and slogan != ''">-->
+<!--                and slogan = #{slogan}-->
+<!--            </if>-->
+            <if test="club.presidentId != null">
+                and president_id = #{club.presidentId}
+            </if>
+<!--            <if test="createTime != null and createTime != ''">-->
+<!--                and create_time = #{createTime}-->
+<!--            </if>-->
+<!--            <if test="admin1 != null">-->
+<!--                and admin1 = #{admin1}-->
+<!--            </if>-->
+<!--            <if test="admin2 != null">-->
+<!--                and admin2 = #{admin2}-->
+<!--            </if>-->
+<!--            <if test="admin3 != null">-->
+<!--                and admin3 = #{admin3}-->
+<!--            </if>-->
+            <if test="club.state != null">
+                and state = #{club.state}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from club
+        <where>
+            <if test="clubId != null">
+                and club_id = #{clubId}
+            </if>
+            <if test="clubAvatar != null and clubAvatar != ''">
+                and club_avatar = #{clubAvatar}
+            </if>
+            <if test="clubName != null and clubName != ''">
+                and club_name = #{clubName}
+            </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
+            <if test="slogan != null and slogan != ''">
+                and slogan = #{slogan}
+            </if>
+            <if test="presidentId != null">
+                and president_id = #{presidentId}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="admin1 != null">
+                and admin1 = #{admin1}
+            </if>
+            <if test="admin2 != null">
+                and admin2 = #{admin2}
+            </if>
+            <if test="admin3 != null">
+                and admin3 = #{admin3}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByState" resultMap="ClubMap">
+        select
+            club_id, club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2, admin3, state
+        from club where state = #{state}
+    </select>
+    <select id="queryManagerClubs" resultMap="ClubMap">
+        select
+            club_id, club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2, admin3, state
+        from club where state= 1 and president_id=#{userId} or admin1=#{userId} or admin2=#{userId} or admin3=#{userId}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="clubId" useGeneratedKeys="true">
+        insert into club(club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2,
+                         admin3, state)
+        values (#{clubAvatar}, #{clubName}, #{introduction}, #{slogan}, #{presidentId}, #{createTime}, #{admin1},
+                #{admin2}, #{admin3}, #{state})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="clubId" useGeneratedKeys="true">
+        insert into club(club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2,
+        admin3, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.clubAvatar}, #{entity.clubName}, #{entity.introduction}, #{entity.slogan}, #{entity.presidentId},
+            #{entity.createTime}, #{entity.admin1}, #{entity.admin2}, #{entity.admin3}, #{entity.state})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="clubId" useGeneratedKeys="true">
+        insert into club(club_avatar, club_name, introduction, slogan, president_id, create_time, admin1, admin2,
+        admin3, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.clubAvatar}, #{entity.clubName}, #{entity.introduction}, #{entity.slogan}, #{entity.presidentId},
+            #{entity.createTime}, #{entity.admin1}, #{entity.admin2}, #{entity.admin3}, #{entity.state})
+        </foreach>
+        on duplicate key update
+        club_avatar = values(club_avatar),
+        club_name = values(club_name),
+        introduction = values(introduction),
+        slogan = values(slogan),
+        president_id = values(president_id),
+        create_time = values(create_time),
+        admin1 = values(admin1),
+        admin2 = values(admin2),
+        admin3 = values(admin3),
+        state = values(state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update club
+        <set>
+            <if test="clubAvatar != null and clubAvatar != ''">
+                club_avatar = #{clubAvatar},
+            </if>
+            <if test="clubName != null and clubName != ''">
+                club_name = #{clubName},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction},
+            </if>
+            <if test="slogan != null and slogan != ''">
+                slogan = #{slogan},
+            </if>
+            <if test="presidentId != null">
+                president_id = #{presidentId},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="admin1 != null">
+                admin1 = #{admin1},
+            </if>
+            <if test="admin2 != null">
+                admin2 = #{admin2},
+            </if>
+            <if test="admin3 != null">
+                admin3 = #{admin3},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where club_id = #{clubId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from club
+        where club_id = #{clubId}
+    </delete>
+
+</mapper>
+

@@ -2,7 +2,7 @@ module.exports = {
     dest:"./docs/dist",
     base: "/clubManager/dist/",
     title: '社团管理系统',
-    description: '一个用springboot+mybatis开发的社团管理系统',
+    description: '用于高校社团管理使用',
     themeConfig: {
         sidebar: 'auto',
         nav: [

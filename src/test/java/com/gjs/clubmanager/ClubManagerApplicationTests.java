@@ -8,6 +8,8 @@ class ClubManagerApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
+
 
 }

@@ -4,8 +4,8 @@ server:
 
 
 mybatis:
-  mapper-locations: classpath:mapper/*mapper.xml
-  type-aliases-package: com.gjs.mapper
+  mapper-locations: classpath:mapper/*Dao.xml
+  type-aliases-package: com.gjs.dao
 
 
 spring:
@@ -20,3 +20,10 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+logging:
+  level:
+    com.gjs: debug
+
+
+file:
+  upload: E:\Code\java\clubManager\upload

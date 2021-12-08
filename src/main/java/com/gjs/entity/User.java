@@ -1,99 +1,137 @@
 package com.gjs.entity;
 
-import lombok.*;
-import org.springframework.data.util.ProxyUtils;
+import lombok.ToString;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
- * @description user
- * @author zhengkai.blog.csdn.net
- * @date 2021-09-29
+ * 用户信息(User)实体类
+ *
+ * @author makejava
+ * @since 2021-11-01 14:49:34
  */
-@Entity
-@Getter
-@Setter
 @ToString
-@RequiredArgsConstructor
-@AllArgsConstructor
-@Table(name="user")
 public class User implements Serializable {
+    private static final long serialVersionUID = -84776490924839192L;
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
-    @Column(name="user_id")
     private Integer userId;
 
-    /**
-     * user_avatar
-     */
-    @Column(name="user_avatar")
     private String userAvatar;
-
     /**
      * 姓名
      */
-    @Column(name="name")
     private String name;
-
     /**
      * 账号
      */
-    @Column(name="account")
     private String account;
-
     /**
      * 密码
      */
-    @Column(name="password")
     private String password;
-
     /**
      * 电话
      */
-    @Column(name="phone")
     private String phone;
-
     /**
      * 邮箱
      */
-    @Column(name="email")
     private String email;
-
     /**
      * 性别
      */
-    @Column(name="sex")
     private String sex;
-
     /**
      * 用户权限
      */
-    @Column(name="permit")
     private Integer permit;
+
 
     /**
      * 班级id
      */
-    @Column(name="grade")
     private Integer grade;
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || ProxyUtils.getUserClass(this) != ProxyUtils.getUserClass(o))
-            return false;
-        User user = (User) o;
-        return Objects.equals(userId, user.userId);
+    public Integer getUserId() {
+        return userId;
     }
 
-    @Override
-    public int hashCode() {
-        return account.hashCode();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Integer getPermit() {
+        return permit;
+    }
+
+    public void setPermit(Integer permit) {
+        this.permit = permit;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
 }
+

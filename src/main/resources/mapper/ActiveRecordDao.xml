@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.ActiveRecordDao">
+
+    <resultMap type="com.gjs.entity.ActiveRecord" id="ActiveRecordMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
+        <result property="registerTime" column="register_time" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ActiveRecordMap">
+        select id,
+               user_id,
+               activity_id,
+               register_time,
+               state
+        from active_record
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ActiveRecordMap">
+        select
+        id, user_id, activity_id, register_time, state
+        from active_record
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="activityId != null">
+                and activity_id = #{activityId}
+            </if>
+            <if test="registerTime != null">
+                and register_time = #{registerTime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from active_record
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="activityId != null">
+                and activity_id = #{activityId}
+            </if>
+            <if test="registerTime != null">
+                and register_time = #{registerTime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into active_record(user_id, activity_id, register_time, state)
+        values (#{userId}, #{activityId}, #{registerTime}, #{state})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into active_record(user_id, activity_id, register_time, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.activityId}, #{entity.registerTime}, #{entity.state})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into active_record(user_id, activity_id, register_time, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.activityId}, #{entity.registerTime}, #{entity.state})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        activity_id = values(activity_id),
+        register_time = values(register_time),
+        state = values(state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update active_record
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="activityId != null">
+                activity_id = #{activityId},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from active_record
+        where id = #{id}
+    </delete>
+
+</mapper>
+

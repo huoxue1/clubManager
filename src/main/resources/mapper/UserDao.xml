@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.UserDao">
+
+    <resultMap type="com.gjs.entity.User" id="UserMap">
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="permit" column="permit" jdbcType="INTEGER"/>
+        <result property="grade" column="grade" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="queryByAccount" resultMap="UserMap">
+        select user_id,
+               user_avatar,
+               name,
+               account,
+               password,
+               phone,
+               email,
+               sex,
+               permit,
+               grade
+        from user where account = #{account}
+    </select>
+
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select user_id,
+               user_avatar,
+               name,
+               account,
+               password,
+               phone,
+               email,
+               sex,
+               permit,
+               grade
+        from user
+        where user_id = #{userId}
+    </select>
+
+
+    <select id="queryAll" resultMap="UserMap">
+        select
+            user_id, user_avatar, name, account, password, phone, email, sex, permit, grade
+        from user
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+        user_id, user_avatar, name, account, password, phone, email, sex, permit, grade
+        from user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="userAvatar != null">
+                and user_avatar = #{userAvatar}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="permit != null">
+                and permit = #{permit}
+            </if>
+            <if test="grade != null">
+                and grade = #{grade}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="userAvatar != null">
+                and user_avatar = #{userAvatar}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="permit != null">
+                and permit = #{permit}
+            </if>
+            <if test="grade != null">
+                and grade = #{grade}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(user_avatar, name, account, password, phone, email, sex, permit, grade)
+        values (#{userAvatar}, #{name}, #{account}, #{password}, #{phone}, #{email}, #{sex}, #{permit}, #{grade})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(user_avatar, name, account, password, phone, email, sex, permit, grade)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userAvatar}, #{entity.name}, #{entity.account}, #{entity.password}, #{entity.phone},
+            #{entity.email}, #{entity.sex}, #{entity.permit}, #{entity.grade})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
+        insert into user(user_avatar, name, account, password, phone, email, sex, permit, grade)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userAvatar}, #{entity.name}, #{entity.account}, #{entity.password}, #{entity.phone},
+            #{entity.email}, #{entity.sex}, #{entity.permit}, #{entity.grade})
+        </foreach>
+        on duplicate key update
+        user_avatar = values(user_avatar),
+        name = values(name),
+        account = values(account),
+        password = values(password),
+        phone = values(phone),
+        email = values(email),
+        sex = values(sex),
+        permit = values(permit),
+        grade = values(grade)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="userAvatar != null">
+                user_avatar = #{userAvatar},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="account != null and account != ''">
+                account = #{account},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="permit != null">
+                permit = #{permit},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from user
+        where user_id = #{userId}
+    </delete>
+
+</mapper>
+

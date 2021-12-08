@@ -1,73 +1,93 @@
 package com.gjs.service.impl;
 
 import com.gjs.entity.Club;
-import com.gjs.entity.H;
-import com.gjs.mapper.ClubMapper;
+import com.gjs.dao.ClubDao;
 import com.gjs.service.ClubService;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * @description club
- * @author gjs
- * @date 2021-10-07
+ * 社团(Club)表服务实现类
+ *
+ * @author makejava
+ * @since 2021-11-01 14:48:21
  */
-@Service
+@Service("clubService")
 public class ClubServiceImpl implements ClubService {
-
     @Resource
-    private ClubMapper clubMapper;
-
-
-    @Override
-    public Object insert(Club club) {
-
-        // valid
-        if (club == null) {
-            return H.error("必要参数缺失");
-        }
-
-        clubMapper.insert(club);
-        return H.success();
-    }
-
+    private ClubDao clubDao;
 
     @Override
-    public Object delete(int id) {
-        int ret = clubMapper.delete(id);
-        return ret>0?H.success():H.error();
+    public List<Club> queryManagerClubs(Integer userId) {
+        return clubDao.queryManagerClubs(userId);
     }
-
 
     @Override
-    public Object update(Club club) {
-        int ret = clubMapper.update(club);
-        return ret>0?H.success():H.error();
+    public List<Club> queryByState(Integer state) {
+        return clubDao.queryByState(state);
     }
 
-
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param clubId 主键
+     * @return 实例对象
+     */
     @Override
-    public Club load(int id) {
-        return clubMapper.load(id);
+    public Club queryById(Integer clubId) {
+        return this.clubDao.queryById(clubId);
     }
 
-
+    /**
+     * 分页查询
+     *
+     * @param club        筛选条件
+     * @param pageRequest 分页对象
+     * @return 查询结果
+     */
     @Override
-    public Map<String,Object> pageList(int offset, int pagesize) {
-
-        List<Club> pageList = clubMapper.pageList(offset, pagesize);
-        int totalCount = clubMapper.pageListCount(offset, pagesize);
-
-        // result
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("pageList", pageList);
-        result.put("totalCount", totalCount);
-
-        return result;
+    public Page<Club> queryByPage(Club club, PageRequest pageRequest) {
+        long total = this.clubDao.count(club);
+        return new PageImpl<>(this.clubDao.queryAllByLimit(club, pageRequest), pageRequest, total);
     }
 
+    /**
+     * 新增数据
+     *
+     * @param club 实例对象
+     * @return 实例对象
+     */
+    @Override
+    public Club insert(Club club) {
+        this.clubDao.insert(club);
+        return club;
+    }
+
+    /**
+     * 修改数据
+     *
+     * @param club 实例对象
+     * @return 实例对象
+     */
+    @Override
+    public Club update(Club club) {
+        this.clubDao.update(club);
+        return this.queryById(club.getClubId());
+    }
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param clubId 主键
+     * @return 是否成功
+     */
+    @Override
+    public boolean deleteById(Integer clubId) {
+        return this.clubDao.deleteById(clubId) > 0;
+    }
 }

@@ -1,66 +1,106 @@
 package com.gjs.service.impl;
 
-import com.gjs.mapper.UserMapper;
-import com.gjs.entity.H;
 import com.gjs.entity.User;
-import com.gjs.exception.CommonEnum;
+import com.gjs.dao.UserDao;
+import com.gjs.exception.exceptionImpl.CustomException;
 import com.gjs.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
+import javax.annotation.Resource;
 
-
-@Service
+/**
+ * 用户信息(User)表服务实现类
+ *
+ * @author makejava
+ * @since 2021-11-01 14:49:35
+ */
+@Service("userService")
 public class UserServiceImpl implements UserService {
-
-    private UserMapper userMapper;
-
-
+    @Resource
+    private UserDao userDao;
 
     @Override
-    public H Login(String account,String password) {
-        User login = userMapper.login(account, password);
-        if (login == null){
-            return H.error(CommonEnum.SIGNATURE_NOT_MATCH);
-        }else {
-            return H.success(login);
+    public User Login(String account,String password) {
+        User user = userDao.queryByAccount(account);
+        if (user == null) {
+            return null;
         }
+        if (!(user.getPassword().equals(password))){
+            return null;
+        }
+        return user;
     }
 
     @Override
-    public H Register(User user) {
-        if (userMapper.loadFromAccount(user.getAccount()) != null) {
-            return H.error("已存在相同账号");
-        }
-        int i = userMapper.insert(user);
-        if (i<0){
-            return H.error("插入数据库发生未知错误");
-        }
-        return H.success("注册成功");
+    public Page<User> queryAll() {
+        long total = this.userDao.count(null);
+        return new PageImpl<>(this.userDao.queryAll(), PageRequest.of(1,10), total);
     }
 
-
-
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param userId 主键
+     * @return 实例对象
+     */
     @Override
-    public H getUsers() {
-        List<User> users = userMapper.queryAll();
-        return H.success(users);
+    public User queryById(Integer userId) {
+        return this.userDao.queryById(userId);
     }
 
+    /**
+     * 分页查询
+     *
+     * @param user        筛选条件
+     * @param pageRequest 分页对象
+     * @return 查询结果
+     */
     @Override
-    public H getUser(int id) {
-        User login = userMapper.load(id);
-        if (login == null){
-            return H.error(CommonEnum.SIGNATURE_NOT_MATCH);
-        }else {
-            return H.success(login);
-        }
+    public Page<User> queryByPage(User user, PageRequest pageRequest) {
+        long total = this.userDao.count(user);
+        return new PageImpl<>(this.userDao.queryAllByLimit(user, pageRequest), pageRequest, total);
     }
 
+    /**
+     * 新增数据
+     *
+     * @param user 实例对象
+     * @return 实例对象
+     */
+    @Override
+    public User insert(User user) {
+        User user1 = userDao.queryByAccount(user.getAccount());
+        if (null != user1){
+            throw new CustomException(1400,"账号已存在");
+        }
+        user.setUserAvatar("default.png");
+        this.userDao.insert(user);
+        return user;
+    }
 
-    @Autowired
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    /**
+     * 修改数据
+     *
+     * @param user 实例对象
+     * @return 实例对象
+     */
+    @Override
+    public User update(User user) {
+        this.userDao.update(user);
+        return this.queryById(user.getUserId());
+    }
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param userId 主键
+     * @return 是否成功
+     */
+    @Override
+    public boolean deleteById(Integer userId) {
+        return this.userDao.deleteById(userId) > 0;
     }
 }

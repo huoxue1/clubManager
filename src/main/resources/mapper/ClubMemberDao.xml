@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.ClubMemberDao">
+
+    <resultMap type="com.gjs.entity.ClubMember" id="ClubMemberMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="clubId" column="club_id" jdbcType="INTEGER"/>
+        <result property="applyTime" column="apply_time" jdbcType="INTEGER"/>
+        <result property="passTime" column="pass_time" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ClubMemberMap">
+        select
+          id, user_id, club_id, apply_time, pass_time, state
+        from club_member
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ClubMemberMap">
+        select
+          id, user_id, club_id, apply_time, pass_time, state
+        from club_member
+        <where>
+            <if test="clubMember.id != null">
+                and id = #{clubMember.id}
+            </if>
+            <if test="clubMember.userId != null">
+                and user_id = #{clubMember.userId}
+            </if>
+            <if test="clubMember.clubId != null">
+                and club_id = #{clubMember.clubId}
+            </if>
+            <if test="clubMember.applyTime != null">
+                and apply_time = #{clubMember.applyTime}
+            </if>
+            <if test="clubMember.passTime != null">
+                and pass_time = #{clubMember.passTime}
+            </if>
+            <if test="clubMember.state != null">
+                and state = #{clubMember.state}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from club_member
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="clubId != null">
+                and club_id = #{clubId}
+            </if>
+            <if test="applyTime != null">
+                and apply_time = #{applyTime}
+            </if>
+            <if test="passTime != null">
+                and pass_time = #{passTime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into club_member(user_id, club_id, apply_time, pass_time, state)
+        values (#{userId}, #{clubId}, #{applyTime}, #{passTime}, #{state})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into club_member(user_id, club_id, apply_time, pass_time, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}, #{entity.clubId}, #{entity.applyTime}, #{entity.passTime}, #{entity.state})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into club_member(user_id, club_id, apply_time, pass_time, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.clubId}, #{entity.applyTime}, #{entity.passTime}, #{entity.state})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        club_id = values(club_id),
+        apply_time = values(apply_time),
+        pass_time = values(pass_time),
+        state = values(state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update club_member
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="clubId != null">
+                club_id = #{clubId},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime},
+            </if>
+            <if test="passTime != null">
+                pass_time = #{passTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from club_member where id = #{id}
+    </delete>
+
+</mapper>
+

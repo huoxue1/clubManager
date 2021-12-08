@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.GradeDao">
+
+    <resultMap type="com.gjs.entity.Grade" id="GradeMap">
+        <result property="gradeId" column="grade_id" jdbcType="INTEGER"/>
+        <result property="gradeName" column="grade_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="GradeMap">
+        select grade_id,
+               grade_name
+        from grade
+        where grade_id = #{gradeId}
+    </select>
+
+    <select id="queryAll" resultMap="GradeMap">
+        select grade_id,grade_name
+            from grade
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="GradeMap">
+        select
+        grade_id, grade_name
+        from grade
+        <where>
+            <if test="gradeId != null">
+                and grade_id = #{gradeId}
+            </if>
+            <if test="gradeName != null and gradeName != ''">
+                and grade_name = #{gradeName}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from grade
+        <where>
+            <if test="gradeId != null">
+                and grade_id = #{gradeId}
+            </if>
+            <if test="gradeName != null and gradeName != ''">
+                and grade_name = #{gradeName}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into grade(grade_name)
+        values (#{gradeName})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into grade(grade_name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.gradeName})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into grade(grade_name)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.gradeName})
+        </foreach>
+        on duplicate key update
+        grade_name = values(grade_name)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update grade
+        <set>
+            <if test="gradeName != null and gradeName != ''">
+                grade_name = #{gradeName},
+            </if>
+        </set>
+        where grade_id = #{gradeId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from grade
+        where grade_id = #{gradeId}
+    </delete>
+
+</mapper>
+

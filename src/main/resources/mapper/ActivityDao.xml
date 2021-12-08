@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjs.dao.ActivityDao">
+
+    <resultMap type="com.gjs.entity.Activity" id="ActivityMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="activityName" column="activity_name" jdbcType="VARCHAR"/>
+        <result property="activityTheme" column="activity_theme" jdbcType="VARCHAR"/>
+        <result property="activityDescription" column="activity_description" jdbcType="VARCHAR"/>
+        <result property="startTime" column="start_time" jdbcType="INTEGER"/>
+        <result property="endTime" column="end_time" jdbcType="INTEGER"/>
+        <result property="clubId" column="club_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="requestMethod" column="request_method" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ActivityMap">
+        select id,
+               activity_name,
+               activity_theme,
+               activity_description,
+               start_time,
+               end_time,
+               club_id,
+               user_id,
+               request_method,
+               state
+        from activity
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ActivityMap">
+        select
+        id, activity_name, activity_theme, activity_description, start_time, end_time, club_id, user_id, request_method,
+        state
+        from activity
+        <where>
+            <if test="activity.id != null">
+                and id = #{activity.id}
+            </if>
+            <if test="activity.activityName != null and activity.activityName != ''">
+                and activity_name = #{activity.activityName}
+            </if>
+            <if test="activity.activityTheme != null and activity.activityTheme != ''">
+                and activity_theme = #{activity.activityTheme}
+            </if>
+            <if test="activity.activityDescription != null and activity.activityDescription != ''">
+                and activity_description = #{activity.activityDescription}
+            </if>
+            <if test="activity.startTime != null">
+                and start_time = #{activity.startTime}
+            </if>
+            <if test="activity.endTime != null">
+                and end_time = #{activity.endTime}
+            </if>
+            <if test="activity.clubId != null">
+                and club_id = #{activity.clubId}
+            </if>
+            <if test="activity.userId != null">
+                and user_id = #{activity.userId}
+            </if>
+            <if test="activity.requestMethod != null">
+                and request_method = #{activity.requestMethod}
+            </if>
+            <if test="activity.state != null">
+                and state = #{activity.state}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from activity
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="activityName != null and activityName != ''">
+                and activity_name = #{activityName}
+            </if>
+            <if test="activityTheme != null and activityTheme != ''">
+                and activity_theme = #{activityTheme}
+            </if>
+            <if test="activityDescription != null and activityDescription != ''">
+                and activity_description = #{activityDescription}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                and end_time = #{endTime}
+            </if>
+            <if test="clubId != null">
+                and club_id = #{clubId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="requestMethod != null">
+                and request_method = #{requestMethod}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into activity(activity_name, activity_theme, activity_description, start_time, end_time, club_id,
+                             user_id, request_method, state)
+        values (#{activityName}, #{activityTheme}, #{activityDescription}, #{startTime}, #{endTime}, #{clubId},
+                #{userId}, #{requestMethod}, #{state})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into activity(activity_name, activity_theme, activity_description, start_time, end_time, club_id,
+        user_id, request_method, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.activityName}, #{entity.activityTheme}, #{entity.activityDescription}, #{entity.startTime},
+            #{entity.endTime}, #{entity.clubId}, #{entity.userId}, #{entity.requestMethod}, #{entity.state})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into activity(activity_name, activity_theme, activity_description, start_time, end_time, club_id,
+        user_id, request_method, state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.activityName}, #{entity.activityTheme}, #{entity.activityDescription}, #{entity.startTime},
+            #{entity.endTime}, #{entity.clubId}, #{entity.userId}, #{entity.requestMethod}, #{entity.state})
+        </foreach>
+        on duplicate key update
+        activity_name = values(activity_name),
+        activity_theme = values(activity_theme),
+        activity_description = values(activity_description),
+        start_time = values(start_time),
+        end_time = values(end_time),
+        club_id = values(club_id),
+        user_id = values(user_id),
+        request_method = values(request_method),
+        state = values(state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update activity
+        <set>
+            <if test="activityName != null and activityName != ''">
+                activity_name = #{activityName},
+            </if>
+            <if test="activityTheme != null and activityTheme != ''">
+                activity_theme = #{activityTheme},
+            </if>
+            <if test="activityDescription != null and activityDescription != ''">
+                activity_description = #{activityDescription},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="clubId != null">
+                club_id = #{clubId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="requestMethod != null">
+                request_method = #{requestMethod},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from activity
+        where id = #{id}
+    </delete>
+
+</mapper>
+
