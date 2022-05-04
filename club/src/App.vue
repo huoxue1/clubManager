@@ -16,7 +16,7 @@
          >
         <el-menu-item index="home">社团首页</el-menu-item>
         <el-menu-item index="create_club">创建社团</el-menu-item>
-        <el-menu-item class="menu">留言板</el-menu-item>
+<!--        <el-menu-item class="menu">留言板</el-menu-item>-->
       </el-menu>
 
     </el-aside>

@@ -48,7 +48,7 @@ module.exports = {
     },
     // 分页获取社团
     get_clubs: async function(page,size){
-        let resp = await axios.get(this.base+"club?page="+page+"&size="+size,{headers:{  'Authorization': 'Basic ' + sessionStorage.getItem("token")}})
+        let resp = await axios.get(this.base+"club?state=1&page="+page+"&size="+size,{headers:{  'Authorization': 'Basic ' + sessionStorage.getItem("token")}})
         return resp.data
     },
     // 获取社团头像
@@ -71,6 +71,12 @@ module.exports = {
     get_joined_clubs: async function(){
       let info = await this.getLoginInfo();
       let data = await axios.get(this.base + "clubMember?userId=" + info.userId + "&state=1&page=0&size=200", {headers: {'Authorization': 'Basic ' + sessionStorage.getItem("token")}});
+      let data1  = await this.get_manager_clubs(info.userId)
+        console.log(data1)
+        for (let i = 0; i < data1.length; i++) {
+            data.data.content.push(data1[i])
+        }
+
       return data.data
     },
     // 获取一个社团

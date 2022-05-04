@@ -205,6 +205,8 @@ export default {
       this.activity.userId = this.info.userId
       this.clubs = await Api.get_manager_clubs(this.info.userId)
       this.select_club_id = this.clubs[0].clubId
+      this.manager_member_club_id = this.clubs[0].clubId
+      this.manager_activity_club_id = this.clubs[0].clubId
       this.club = this.clubs[0]
     }
     a()
@@ -242,6 +244,7 @@ export default {
         if (data.id!==0){
           ElMessage({message:"创建成功",type:"success"})
         }
+        this.activity = {}
       })
     },
     delete_active:function(id){

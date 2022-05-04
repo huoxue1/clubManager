@@ -94,7 +94,6 @@ export default {
         Api.is_join_club(this.content[i].clubId).then((data1)=>{
 
             this.content[i].joined = data1
-
         })
       }
 

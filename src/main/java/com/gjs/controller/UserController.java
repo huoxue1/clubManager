@@ -28,7 +28,6 @@ import java.util.UUID;
  * @author makejava
  * @since 2021-11-01 14:49:33
  */
-@CrossOrigin(value = "http://127.0.0.1:8081")
 @RestController
 @Slf4j
 @RequestMapping("user")

@@ -19,3 +19,9 @@
 + #### axios
 + #### vue router
 + #### [element plus](https://element-plus.org/)
+
+### 文档
++ #### vuepress
+
+### 开源平台
++ ###[github](https://github.com/huoxue1/clubManager)
